@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { Task } from "../types/task";
 import TaskCard from "../components/TaskCard";
 import PriorityFilter from "../components/PriorityFilter";
+import { fetchTasks, deleteTask } from "../services/taskService";
 
 function TaskListPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -9,18 +10,10 @@ function TaskListPage() {
   const [error, setError] = useState("");
   const [priority, setPriority] = useState("");
 
-  const fetchTasks = (priorityFilter: string) => {
+  useEffect(() => {
     setLoading(true);
     setError("");
-    const url = priorityFilter
-      ? `http://localhost:5000/tasks?priority=${priorityFilter}`
-      : "http://localhost:5000/tasks";
-
-    fetch(url)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch");
-        return res.json();
-      })
+    fetchTasks(priority)
       .then((data) => {
         setTasks(data);
         setLoading(false);
@@ -29,14 +22,10 @@ function TaskListPage() {
         setError("Failed to load tasks. Make sure the server is running.");
         setLoading(false);
       });
-  };
-
-  useEffect(() => {
-    fetchTasks(priority);
   }, [priority]);
 
   const handleDelete = (id: string) => {
-    fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" })
+    deleteTask(id)
       .then(() => setTasks((prev) => prev.filter((t) => t._id !== id)))
       .catch(() => alert("Failed to delete task."));
   };
