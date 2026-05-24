@@ -9,27 +9,36 @@ function TaskListPage() {
   const [error, setError] = useState("");
   const [priority, setPriority] = useState("");
 
-  useEffect(() => {
+  const fetchTasks = (priorityFilter: string) => {
     setLoading(true);
-    const url = priority
-      ? `http://localhost:5000/tasks?priority=${priority}`
+    setError("");
+    const url = priorityFilter
+      ? `http://localhost:5000/tasks?priority=${priorityFilter}`
       : "http://localhost:5000/tasks";
 
     fetch(url)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch");
+        return res.json();
+      })
       .then((data) => {
         setTasks(data);
         setLoading(false);
       })
       .catch(() => {
-        setError("Failed to load tasks");
+        setError("Failed to load tasks. Make sure the server is running.");
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchTasks(priority);
   }, [priority]);
 
   const handleDelete = (id: string) => {
     fetch(`http://localhost:5000/tasks/${id}`, { method: "DELETE" })
-      .then(() => setTasks(tasks.filter((t) => t._id !== id)));
+      .then(() => setTasks((prev) => prev.filter((t) => t._id !== id)))
+      .catch(() => alert("Failed to delete task."));
   };
 
   return (
@@ -41,13 +50,13 @@ function TaskListPage() {
         <h3>Task List</h3>
         <PriorityFilter selected={priority} onChange={setPriority} />
         <div className="task-container">
-          {loading && <p>Loading tasks...</p>}
-          {error && <p>{error}</p>}
+          {loading && <p className="state-msg">Loading tasks...</p>}
+          {error && <p className="state-msg error">{error}</p>}
           {!loading && !error && tasks.length === 0 && (
-            <p>No tasks found. Create your first task!</p>
+            <p className="state-msg">No tasks found. Create your first task!</p>
           )}
-          {!loading && !error && tasks.map((task) => (
-            <TaskCard key={task._id} task={task} onDelete={handleDelete} />
+          {!loading && !error && tasks.map((task, index) => (
+            <TaskCard key={task._id} task={task} index={index + 1} onDelete={handleDelete} />
           ))}
         </div>
       </section>

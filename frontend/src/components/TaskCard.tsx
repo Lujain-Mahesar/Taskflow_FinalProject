@@ -2,10 +2,11 @@ import type { Task } from "../types/task";
 
 type TaskCardProps = {
   task: Task;
+  index: number;
   onDelete: (id: string) => void;
 };
 
-function TaskCard({ task, onDelete }: TaskCardProps) {
+function TaskCard({ task, index, onDelete }: TaskCardProps) {
   const handleDelete = () => {
     const confirmed = window.confirm("Are you sure you want to delete this task?");
     if (!confirmed) return;
@@ -27,7 +28,7 @@ function TaskCard({ task, onDelete }: TaskCardProps) {
   return (
     <div className="task-box">
       <div className="task-left">
-        <h4>{task.title}</h4>
+        <h4>Task #{index}: {task.title}</h4>
         <p>{task.description}</p>
         <p style={{ fontStyle: "normal", marginTop: "6px" }}>
           Created: {new Date(task.createdAt).toLocaleDateString()}
