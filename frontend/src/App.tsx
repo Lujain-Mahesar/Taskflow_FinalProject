@@ -1,3 +1,4 @@
+import CreateTaskPage from './pages/CreateTaskPage';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
@@ -10,8 +11,9 @@ function App() {
       <Header />
       <Navbar />
       <Routes>
-        <Route path="/" element={<TaskListPage />} />
-      </Routes>
+          <Route path="/" element={<TaskListPage />} />
+          <Route path="/create" element={<CreateTaskPage />} />
+        </Routes>
       <Footer />
     </BrowserRouter>
   );
