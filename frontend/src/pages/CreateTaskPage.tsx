@@ -12,6 +12,7 @@ const CreateTaskPage = () => {
     console.log("New Task:", { title, description, priority });
     alert("Task captured!");
   };
+  // Commit 2: Aligning container width and card styling with the project dashboard
 
   return (
     
