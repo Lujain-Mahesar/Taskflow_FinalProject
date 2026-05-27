@@ -77,6 +77,42 @@ body { font-family: Arial, sans-serif; background: #f5f5f5; color: #333; }
   padding: 6px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;
 }
 
+.form-container { max-width: 600px; margin: 32px auto; padding: 0 16px; }
+.form-container h2 { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+
+.form-card {
+  background: white; border-radius: 8px; padding: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.form-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 20px; }
+
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 8px 12px; border: 1px solid #ccc;
+  border-radius: 6px; font-size: 14px;
+}
+
+.form-row { display: flex; gap: 16px; }
+.form-row .form-group { flex: 1; }
+
+.form-group textarea { height: 80px; resize: vertical; }
+
+.error-msg { color: #e53e3e; font-size: 13px; margin-top: 4px; }
+
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+.btn-submit {
+  padding: 8px 20px; background: #222; color: white;
+  border: none; border-radius: 6px; cursor: pointer; font-size: 14px;
+}
+
+.btn-clear {
+  padding: 8px 20px; background: white; color: #333;
+  border: 1px solid #ccc; border-radius: 6px; cursor: pointer; font-size: 14px;
+}
+
 .main-footer {
   display: flex; justify-content: space-between; align-items: center;
   padding: 16px 32px; background: white; border-top: 1px solid #eee;
@@ -90,160 +126,5 @@ body { font-family: Arial, sans-serif; background: #f5f5f5; color: #333; }
   .dashboard-container { padding: 0 8px; }
   .task-box { flex-direction: column; align-items: flex-start; gap: 10px; }
   .task-right { width: 100%; justify-content: flex-end; }
-}
-
-/* General Page Styling */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f4f7f6;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  padding: 40px;
-}
-
-
-.task-container {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 500px; /* <--- This was the narrowness culprit! */
-}
-
-h1 {
-  color: #333;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-/* Form Layout */
-.task-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-label {
-  font-weight: 600;
-  color: #555;
-}
-
-/* Inputs and Selects */
-input, textarea, select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-/* Submit Button */
-.submit-btn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.submit-btn:hover {
-  background-color: #45a049;
-}
-
-
-/*grey changes updated*/
-.create-task-section {
-  display: flex;
-  justify-content: center;
-  padding: 2rem;
-  background-color: #f8f9fa; /* Matches her light gray background */
-  min-height: 80vh;
-}
-
-.task-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* Matches her soft shadow */
-  padding: 2rem;
-  width: 100%;
-  max-width: 600px;
-  border-top: 4px solid #007bff; /* Adds a professional blue accent */
-}
-
-.task-card h1 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1.5rem;
-  font-weight: 600;
-}
-
-.form-label {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: #666;
-  margin-bottom: 0.5rem;
-  display: block;
-}
-
-.form-input {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 1.25rem;
-  border: 1px solid #dee2e6;
-  border-radius: 5px;
-  background-color: #fff;
-}
-
-.submit-btn-primary {
-  background-color: #007bff; /* Matches standard Bootstrap blue */
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.submit-btn-primary:hover {
-  background-color: #0056b3;
-}
-
-
-/* Force the container to match Lujain's list width */
-.container {
-  max-width: 1140px !important; 
-  width: 100% !important;
-}
-
-.card {
-  width: 100% !important;
-}
-/* This forces the page to be as wide as Lujain's list */
-.custom-wide-container {
-    width: 95% !important;
-    max-width: 1400px !important;
-    margin: 0 auto !important;
-}
-
-/* This ensures the card itself doesn't shrink */
-.card {
-    width: 100% !important;
-    border: 1px solid #dee2e6 !important;
+  .form-row { flex-direction: column; }
 }
