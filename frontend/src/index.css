@@ -131,3 +131,14 @@ body { font-family: Arial, sans-serif; background: #f5f5f5; color: #333; }
   .task-right { width: 100%; justify-content: flex-end; }
   .form-row { flex-direction: column; }
 }
+
+.validation-error {
+  color: #e53e3e;
+  font-size: 13px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+input.input-error, textarea.input-error, select.input-error {
+  border-color: #e53e3e;
+}
