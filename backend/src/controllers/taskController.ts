@@ -13,13 +13,20 @@ export const getTasks = async (req: Request, res: Response) => {
   }
 };
 
+// --- YOUR WORK: Commit 7 (Added Data Trimming & Enhanced POST logic) ---
 export const createTask = async (req: Request, res: Response) => {
   try {
     const { title, description, status, priority, dueDate } = req.body;
-    if (!title || !description) {
-      return res.status(400).json({ message: "Title and description are required" });
+
+    // YOUR FEATURE: Trim whitespace from title so tasks don't have leading/trailing spaces
+    const cleanTitle = title?.trim();
+    const cleanDescription = description?.trim();
+
+    if (!cleanTitle || !cleanDescription) {
+      return res.status(400).json({ message: "Title and description are required and cannot be empty spaces" });
     }
-    const task = new Task({ title, description, status, priority, dueDate });
+
+    const task = new Task({ title: cleanTitle, description: cleanDescription, status, priority, dueDate });
     await task.save();
     res.status(201).json(task);
   } catch (err) {
@@ -27,11 +34,20 @@ export const createTask = async (req: Request, res: Response) => {
   }
 };
 
+// --- YOUR WORK: Commit 8 (Added ID Validation & Enhanced DELETE logic) ---
 export const deleteTask = async (req: Request, res: Response) => {
   try {
-    const task = await Task.findByIdAndDelete(req.params.id);
+    const { id } = req.params;
+
+    // YOUR FEATURE: Check if the ID is a valid MongoDB ObjectId to prevent server crash
+    if (id.length !== 24) {
+      return res.status(400).json({ message: "Invalid Task ID format" });
+    }
+
+    const task = await Task.findByIdAndDelete(id);
     if (!task) return res.status(404).json({ message: "Task not found" });
-    res.json({ message: "Task deleted" });
+    
+    res.json({ message: "Task deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: "Server error" });
   }
