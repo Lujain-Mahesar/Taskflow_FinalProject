@@ -1,3 +1,4 @@
+// Task Model - Defined for MongoDB Schema (Commit 6)
 import mongoose from "mongoose";
 
 const taskSchema = new mongoose.Schema({
