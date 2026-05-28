@@ -52,3 +52,20 @@ export const deleteTask = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+export const updateTask = async (req: Request, res: Response) => {
+  try {
+    const { title, description, status, priority, dueDate } = req.body;
+    if (!title || !description) {
+      return res.status(400).json({ message: "Title and description are required" });
+    }
+    const task = await Task.findByIdAndUpdate(
+      req.params.id,
+      { title, description, status, priority, dueDate },
+      { new: true }
+    );
+    if (!task) return res.status(404).json({ message: "Task not found" });
+    res.json(task);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
