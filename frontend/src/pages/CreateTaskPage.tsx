@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Task, TaskPriority, TaskStatus } from "../types/task";
 
 type CreateTaskPageProps = {
   onCreateTask: (task: Task) => void;
+  editingTask?: Task | null;
 };
 
-const CreateTaskPage = ({ onCreateTask }: CreateTaskPageProps) => {
+const CreateTaskPage = ({ onCreateTask, editingTask }: CreateTaskPageProps) => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -16,6 +17,16 @@ const CreateTaskPage = ({ onCreateTask }: CreateTaskPageProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  useEffect(() => {
+    if (editingTask) {
+      setTitle(editingTask.title);
+      setDescription(editingTask.description);
+      setStatus(editingTask.status);
+      setPriority(editingTask.priority);
+      setDueDate(editingTask.dueDate ?? "");
+    }
+  }, [editingTask]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) {
@@ -23,19 +34,25 @@ const CreateTaskPage = ({ onCreateTask }: CreateTaskPageProps) => {
       return;
     }
     setLoading(true);
-    const newTask = { title: title.trim(), description: description.trim(), status, priority, dueDate: dueDate || undefined };
+    const taskData = { title: title.trim(), description: description.trim(), status, priority, dueDate: dueDate || undefined };
+
     try {
-      const response = await fetch("http://localhost:5000/tasks", {
-        method: "POST",
+      const url = editingTask
+        ? `http://localhost:5000/tasks/${editingTask._id}`
+        : "http://localhost:5000/tasks";
+      const method = editingTask ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newTask),
+        body: JSON.stringify(taskData),
       });
       if (!response.ok) throw new Error();
       const savedTask = await response.json();
       onCreateTask(savedTask);
       navigate("/");
     } catch {
-      setError("Failed to create task. Please try again.");
+      setError("Failed to save task. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -44,10 +61,10 @@ const CreateTaskPage = ({ onCreateTask }: CreateTaskPageProps) => {
   return (
     <main className="dashboard-container">
       <div className="ui-label">
-        <h2>Create New Task</h2>
+        <h2>{editingTask ? "Edit Task" : "Create New Task"}</h2>
       </div>
       <section className="card">
-        <h3>New Task</h3>
+        <h3>{editingTask ? "Update Task" : "New Task"}</h3>
         <form onSubmit={handleSubmit}>
           {error && <p className="state-msg error" style={{ marginBottom: "15px" }}>{error}</p>}
           <div className="form-group">
@@ -82,7 +99,9 @@ const CreateTaskPage = ({ onCreateTask }: CreateTaskPageProps) => {
           </div>
           <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "8px" }}>
             <button type="button" onClick={() => navigate("/")} style={{ background: "none", border: "1px solid #d1d5db", padding: "10px 20px", borderRadius: "6px", cursor: "pointer" }}>Cancel</button>
-            <button type="submit" disabled={loading} style={{ backgroundColor: "#111827", color: "white", padding: "10px 30px", borderRadius: "6px", border: "none", fontWeight: "600", cursor: "pointer" }}>{loading ? "Saving..." : "Create Task"}</button>
+            <button type="submit" disabled={loading} style={{ backgroundColor: "#111827", color: "white", padding: "10px 30px", borderRadius: "6px", border: "none", fontWeight: "600", cursor: "pointer" }}>
+              {loading ? "Saving..." : editingTask ? "Update Task" : "Create Task"}
+            </button>
           </div>
         </form>
       </section>

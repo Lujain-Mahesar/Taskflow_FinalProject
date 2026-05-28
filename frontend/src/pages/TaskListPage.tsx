@@ -4,7 +4,11 @@ import TaskCard from "../components/TaskCard";
 import PriorityFilter from "../components/PriorityFilter";
 import { fetchTasks, deleteTask } from "../services/taskService";
 
-function TaskListPage() {
+type Props = {
+  onEdit: (task: Task) => void;
+};
+
+function TaskListPage({ onEdit }: Props) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -45,7 +49,7 @@ function TaskListPage() {
             <p className="state-msg">No tasks found. Create your first task!</p>
           )}
           {!loading && !error && tasks.map((task, index) => (
-            <TaskCard key={task._id} task={task} index={index + 1} onDelete={handleDelete} />
+            <TaskCard key={task._id} task={task} index={index + 1} onDelete={handleDelete} onEdit={onEdit} />
           ))}
         </div>
       </section>

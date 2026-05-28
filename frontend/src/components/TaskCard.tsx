@@ -1,16 +1,25 @@
+import { useNavigate } from "react-router-dom";
 import type { Task } from "../types/task";
 
 type TaskCardProps = {
   task: Task;
   index: number;
   onDelete: (id: string) => void;
+  onEdit: (task: Task) => void;
 };
 
-function TaskCard({ task, index, onDelete }: TaskCardProps) {
+function TaskCard({ task, index, onDelete, onEdit }: TaskCardProps) {
+  const navigate = useNavigate();
+
   const handleDelete = () => {
     const confirmed = window.confirm("Are you sure you want to delete this task?");
     if (!confirmed) return;
     onDelete(task._id);
+  };
+
+  const handleEdit = () => {
+    onEdit(task);
+    navigate("/create");
   };
 
   const getStatusColor = (status: string) => {
@@ -34,18 +43,13 @@ function TaskCard({ task, index, onDelete }: TaskCardProps) {
           Created: {new Date(task.createdAt).toLocaleDateString()}
         </p>
         <div style={{ display: "flex", gap: "8px", marginTop: "6px" }}>
-          <span className="badge" style={getStatusColor(task.status)}>
-            {task.status}
-          </span>
-          <span className="badge" style={getPriorityColor(task.priority)}>
-            {task.priority}
-          </span>
+          <span className="badge" style={getStatusColor(task.status)}>{task.status}</span>
+          <span className="badge" style={getPriorityColor(task.priority)}>{task.priority}</span>
         </div>
       </div>
       <div className="task-right">
-        {task.dueDate && (
-          <span className="due-date">due: {task.dueDate}</span>
-        )}
+        {task.dueDate && <span className="due-date">due: {task.dueDate}</span>}
+        <button className="btn-edit" onClick={handleEdit}>Edit</button>
         <button className="btn-delete" onClick={handleDelete}>Delete</button>
       </div>
     </div>
