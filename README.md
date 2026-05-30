@@ -1,8 +1,6 @@
 # TaskFlow - Full Stack Task Manager
 
-TaskFlow is a MERN stack application built with TypeScript, 
-designed to help users manage their daily tasks with ease. 
-This project was a collaboration between Lujain and Parwasha.
+A full-stack task management application built with React, TypeScript, Express, and MongoDB for CS4717 Web Technologies I Final Project.
 
 ---
 
@@ -125,8 +123,3 @@ http://localhost:5173
 - **Course:** CS4717 Web Technologies I
 - **Instructor:** Muhammad Ikram Ul Haq
 - **Section:** A
-
-then push it, 
-git add README.md
-git commit -m "docs: updated final README"
-git push
